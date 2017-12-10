@@ -89,16 +89,16 @@ function notifyGithub(){
     local states=( "success" "failure" "pending" "error" )
     local key=$1
     local state=${states[$2]}
-    curl -s -o /dev/null -w "%{http_code} "-X POST \
-         https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/circlego/statuses/${CIRCLE_SHA1} \
+    curl -s -o /dev/null -w "%{http_code} " -X POST \
+         https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/statuses/${CIRCLE_SHA1} \
          -H "authorization: token $GITHUBTOKEN" \
          -H 'cache-control: no-cache' \
          -H 'content-type: application/json' \
          -H 'postman-token: b0604e1a-a777-df11-f3ac-df86e1b12335' \
          -d "{
            \"state\": \"${state}\",
-           \"target_url\": \"https://circleci.com/bb/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BUILD_NUM}?utm_campaign=vcs-integration-link&utm_medium=referral&utm_source=bitbucket-build-link\",
-           \"context\": \"go/${KEY}\"
+           \"target_url\": \"https://circleci.com/gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/${CIRCLE_BUILD_NUM}?utm_campaign=vcs-integration-link&utm_medium=referral&utm_source=github-build-link\",
+           \"context\": \"${key}\"
            }"
     echo ""
 }
@@ -111,3 +111,4 @@ else
     exit 1
 fi
         
+
